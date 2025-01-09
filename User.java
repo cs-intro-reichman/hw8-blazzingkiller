@@ -65,7 +65,7 @@
             return false;
         }
     
-        follows[fCount] = nameLower;
+        follows[fCount] = name;
         fCount++;
         return true;
     }
