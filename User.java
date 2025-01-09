@@ -59,7 +59,7 @@
     
         // 1. Check if already follows
         for (int i = 0; i < fCount; i++) {
-            if (follows[i].equals(nameLower)) {
+            if (follows[i].toLowerCase().equals(nameLower)) {
                 // Already follows this name
                 return false;
             }
@@ -85,7 +85,7 @@
         }
         String name2 = name.toLowerCase();
         for (int i = 0; i < fCount; i++) {
-            if (follows[i].equals(name2)) {
+            if (follows[i].toLowerCase().equals(name2)) {
                 // Shift elements to the left
                 for (int j = i; j < fCount - 1; j++) {
                     follows[j] = follows[j + 1];

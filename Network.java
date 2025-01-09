@@ -76,7 +76,7 @@ public class Network {
         }
 
         // Attempt to have user1 follow user2
-        return user1.addFollowee(user2); 
+        return user1.addFollowee(name2); 
     }
 
     /** For the user with the given name, recommends another user to follow. 
@@ -91,7 +91,7 @@ public class Network {
         }
 
         // Get current user’s followees (list of users that currentUser follows).
-        List<User> currentFollowees = currentUser.getFollowees();
+        List<User> currentFollowees = currentUser.getfCount();
 
         int bestIntersectionCount = -1;
         User bestCandidate = null;
@@ -111,7 +111,7 @@ public class Network {
             // 3) Calculate mutual followees between currentUser and 'other'
             int intersectionCount = 0;
             for (User f : currentFollowees) {
-                if (other.getFollowees().contains(f)) {
+                if (other.getfCount().contains(f)) {
                     intersectionCount++;
                 }
             }
