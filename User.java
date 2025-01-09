@@ -2,18 +2,17 @@
  *  a list of user names that s/he follows, and the list's size. */
  public class User {
 
-    // Maximum number of users that a user can follow
     static int maxfCount = 10;
 
-    private String name;       // name of this user
-    private String[] follows;  // array of user names that this user follows
-    private int fCount;        // actual number of followees (must be <= maxfCount)
+    private String name;       
+    private String[] follows;  
+    private int fCount;        
 
     /** Creates a user with an empty list of followees. */
     public User(String name) {
         this.name = name;
-        follows = new String[maxfCount]; // fixed-size array for storing followees
-        fCount = 0;                      // initial number of followees
+        follows = new String[maxfCount]; 
+        fCount = 0;                      
     }
 
     /** Creates a user with some followees. The only purpose of this constructor is 
@@ -54,24 +53,18 @@
     /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
-        // Convert input name to lowercase for consistency
         String nameLower = name.toLowerCase();
     
-        // 1. Check if already follows
         for (int i = 0; i < fCount; i++) {
             if (follows[i].toLowerCase().equals(nameLower)) {
-                // Already follows this name
                 return false;
             }
         }
     
-        // 2. Check if the follows list is full
         if (fCount >= follows.length) {
-            // No space left in the array
             return false;
         }
     
-        // 3. Add the new followee to the next available index
         follows[fCount] = nameLower;
         fCount++;
         return true;
@@ -86,21 +79,17 @@
         String name2 = name.toLowerCase();
         for (int i = 0; i < fCount; i++) {
             if (follows[i].toLowerCase().equals(name2)) {
-                // Shift elements to the left
                 for (int j = i; j < fCount - 1; j++) {
                     follows[j] = follows[j + 1];
                 }
                   
-            // Clear the last valid element (now duplicated)
             follows[fCount - 1] = null;
             
-            // Decrement the count of followed users
             fCount--;
             return true;
         }
     }
     
-    // If the name is not found, return false
     return false;
 }
 

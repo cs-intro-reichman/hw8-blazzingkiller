@@ -199,11 +199,17 @@ public class Network {
         if (userCount == 0) {
             return "Network:";
         }
-
-        StringBuilder sb = new StringBuilder("Network:\n");
+    
+        String result = "Network:\n";
+        
         for (int i = 0; i < userCount; i++) {
-            sb.append(users[i].toString()).append("\n");
+            if (i < userCount - 1) {
+                result += users[i].toString() + "\n";
+            } else {
+                result += users[i].toString();
+            }
         }
-        return sb.toString().trim();
+    
+        return result;
     }
-}
+    
