@@ -4,9 +4,8 @@
  */
 public class Network {
 
-    // Fields
-    private User[] users;    // The users in this network (an array of User objects)
-    private int userCount;   // Actual number of users in this network
+    private User[] users;    
+    private int userCount;   
 
     /** Creates a network with a given maximum number of users. */
     public Network(int maxUserCount) {
@@ -57,15 +56,12 @@ public class Network {
      * Otherwise, creates a new user with the given name, adds the user to this network, and returns true.
      */
     public boolean addUser(String name) {
-        // 1) Check if the network is full
         if (userCount >= users.length) {
             return false;
         }
-        // 2) Check if user already exists
         if (getUser(name) != null) {
             return false;
         }
-        // 3) Create new user and add to the array
         users[userCount] = new User(name);
         userCount++;
         return true;
@@ -77,16 +73,17 @@ public class Network {
      * or if the "addFollowee" call fails (already follows or list is full), returns false.
      */
     public boolean addFollowee(String name1, String name2) {
-        // Retrieve the User objects for both names
         User user1 = getUser(name1);
         User user2 = getUser(name2);
 
-        // If either user doesn't exist, return false
         if (user1 == null || user2 == null) {
             return false;
         }
 
-        // Attempt to have user1 follow user2
+        if (user1 == user2) {
+            return false;
+        }
+
         return user1.addFollowee(name2); 
     }
 
@@ -97,40 +94,32 @@ public class Network {
      * If the user doesn't exist or there's no possible recommendation, returns null.
      */
     public String recommendWhoToFollow(String name) {
-        // 1) Find the user with the given name.
         User currentUser = getUser(name);
         if (currentUser == null) {
             return null; // user not found
         }
 
-        // 2) Get current user’s follows array and count
         String[] currentFollows = currentUser.getfFollows();
         int currentFCount = currentUser.getfCount();
 
         int bestIntersectionCount = -1;
         User bestCandidate = null;
 
-        // 3) Check every other user in the network as a potential recommendation
         for (int i = 0; i < userCount; i++) {
             User other = users[i];
 
-            // a) Skip if it's the same user
             if (other == currentUser) {
                 continue;
             }
-            // b) Skip if current user already follows 'other'
             if (currentUser.follows(other.getName())) {
                 continue;
             }
 
-            // c) Calculate intersection of followees between currentUser and 'other'
             int intersectionCount = 0;
 
-            // Collect 'other' user's follow list and count
             String[] otherFollows = other.getfFollows();
             int otherFCount = other.getfCount();
 
-            // Compare each followee in currentFollows to each followee in otherFollows
             for (int j = 0; j < currentFCount; j++) {
                 String currFolloweeName = currentFollows[j];
                 if (currFolloweeName == null) {
@@ -142,19 +131,17 @@ public class Network {
                     }
                     if (otherFollows[k].equalsIgnoreCase(currFolloweeName)) {
                         intersectionCount++;
-                        break; // no need to check more once matched
+                        break; 
                     }
                 }
             }
 
-            // d) Track the user with the largest intersection
             if (intersectionCount > bestIntersectionCount) {
                 bestIntersectionCount = intersectionCount;
                 bestCandidate = other;
             }
         }
 
-        // 4) Return the best candidate's name, or null if none found
         return (bestCandidate == null) ? null : bestCandidate.getName();
     }
 
@@ -171,7 +158,6 @@ public class Network {
         String mostPopular = null;
         int maxCount = -1;
 
-        // For each user, count how many times they're followed
         for (int i = 0; i < userCount; i++) {
             String candidateName = users[i].getName();
             int count = followeeCount(candidateName);
@@ -192,15 +178,12 @@ public class Network {
     private int followeeCount(String name) {
         int count = 0;
         for (int i = 0; i < userCount; i++) {
-            // Check if users[i] follows the user whose name is `name`
             String[] arr = users[i].getfFollows();
             int fCount = users[i].getfCount();
 
             for (int j = 0; j < fCount; j++) {
-                // Watch out for nulls
                 if (arr[j] != null && arr[j].equalsIgnoreCase(name)) {
                     count++;
-                    // Each user can follow someone only once; so break after counting
                     break;
                 }
             }
@@ -221,7 +204,6 @@ public class Network {
         for (int i = 0; i < userCount; i++) {
             sb.append(users[i].toString()).append("\n");
         }
-        // Trim trailing newline
         return sb.toString().trim();
     }
 }
